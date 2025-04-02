@@ -3,169 +3,270 @@ title: Guía de Solución de Problemas Comunes en N8N
 date: 2025-01-23
 author: aitorroma
 description: Una guía completa de los errores más frecuentes en N8N y cómo solucionarlos, basada en la experiencia de la comunidad
-tags: [guía, soluciones, errores, troubleshooting]
+tags: [guía, soluciones, errores, troubleshooting, n8n]
 featured_image: https://raw.githubusercontent.com/aitorroma/comunidad-n8n-blog/main/assets/solving.jpg
 ---
 
 # Guía de Solución de Problemas Comunes en N8N
 
-Esta guía recopila los problemas más frecuentes reportados por la comunidad de N8N y sus soluciones verificadas. Cada problema incluye una descripción detallada, su impacto y los pasos específicos para resolverlo.
+Esta guía recopila los problemas más frecuentes reportados por la comunidad de N8N y sus soluciones verificadas. Cada problema incluye una descripción detallada, su impacto, los pasos específicos para resolverlo y ejemplos prácticos de configuración.
 
-## 1. Bad Request - Problemas con Parámetros
+## Índice
+1. [Problemas con Parámetros y Peticiones HTTP](#1-problemas-con-parámetros-y-peticiones-http)
+2. [Webhooks de Telegram](#2-webhooks-de-telegram)
+3. [Problemas con Variables](#3-problemas-con-variables)
+4. [Errores de Base de Datos](#4-errores-de-base-de-datos)
+5. [Problemas de Rendimiento](#5-problemas-de-rendimiento)
+6. [Configuración de Dominio](#6-configuración-de-dominio)
+7. [Manejo de Archivos y Multimedia](#7-manejo-de-archivos-y-multimedia)
+8. [Gestión de Credenciales](#8-gestión-de-credenciales)
 
-### Error
-`Bad request - please check your parameters`
+## 1. Problemas con Parámetros y Peticiones HTTP
 
-### Causa
-- Problemas con los parámetros de entrada en nodos HTTP Request
-- Demasiadas peticiones al servidor en el caso del nodo Email Trigger
+### Síntomas
+- Error "Bad request - please check your parameters"
+- Respuestas 400 o 500 en nodos HTTP Request
+- Fallos en la autenticación de APIs
+
+### Causas Comunes
+1. Formato incorrecto de parámetros
+2. Headers mal configurados
+3. Problemas de autenticación
+4. Rate limiting
 
 ### Solución ✅
-1. Revisar los parámetros de entrada en el nodo
-2. Para Email Trigger: usar el nodo con carpetas y filtros
+1. **Validación de Parámetros**:
+   ```javascript
+   // Ejemplo de formato correcto
+   {
+     "headers": {
+       "Content-Type": "application/json",
+       "Authorization": "Bearer {{$node.HTTP_Auth.data.access_token}}"
+     },
+     "body": {
+       "key": "value"
+     }
+   }
+   ```
 
-### Configuración 🔍
-- Verificar URL y método en nodos HTTP
-- Chequear credenciales y autenticación
-- Validar esquema JSON y datos de entrada
+2. **Manejo de Rate Limiting**:
+   - Usar el nodo "Split In Batches"
+   - Configurar delays entre peticiones
+   ```javascript
+   // En Function node
+   await new Promise(resolve => setTimeout(resolve, 1000)); // 1 segundo de delay
+   ```
+
+3. **Debugging**:
+   - Activar "Debug" en el nodo
+   - Usar console.log() en Function nodes
+   - Revisar Network en el panel de desarrollo
 
 ## 2. Webhooks de Telegram
 
-### Error
-`Bad Request: bad webhook: An HTTPS URL must be provided for webhook`
+### Síntomas
+- Error "Bad Request: bad webhook"
+- No se reciben actualizaciones
+- Problemas con SSL
 
-### Causa
-La URL del webhook debe ser HTTPS y accesible desde internet
+### Solución Detallada ✅
+1. **Configuración de SSL**:
+   ```bash
+   # Verificar certificado SSL
+   openssl x509 -in /path/to/cert.pem -text -noout
+   ```
 
-### Solución ✅
-1. Asegurar que N8N sea accesible mediante HTTPS
-2. Configurar correctamente el túnel o proxy inverso
-3. Usar la URL correcta del webhook de producción
+2. **Configuración del Webhook**:
+   ```javascript
+   // Ejemplo de setup
+   {
+     "url": "https://tudominio.com/webhook/telegram",
+     "allowed_updates": ["message", "callback_query"],
+     "drop_pending_updates": true
+   }
+   ```
 
-### Configuración 🔍
-```yaml
-# En docker-compose.yml
-command: "n8n start --tunnel"
+3. **Verificación**:
+   ```bash
+   # Comprobar estado del webhook
+   curl "https://api.telegram.org/bot<TU_TOKEN>/getWebhookInfo"
+   ```
 
-# Variables de entorno necesarias
-N8N_HOST=tu-dominio.com
-N8N_PROTOCOL=https
-WEBHOOK_URL=https://tu-dominio.com/
-```
+## 3. Problemas con Variables
 
-## 3. Problemas con HTTP Request y Code
-
-### Error
-`TypeError: Cannot convert undefined or null to object`
-
-### Causa
-Estructura de datos incorrecta o falta de datos en nodos anteriores
-
-### Solución ✅
-Usar la notación correcta para acceder a los datos:
-```javascript
-// Acceder a un campo específico
-$node["nombre_nodo"].json["campo"]
-
-// Acceder a todos los items
-$node["nombre_nodo"].item
-
-// Obtener primer valor
-{{ $node["nombre_nodo"].json["campo"].first() }}
-```
-
-## 4. Email Trigger (IMAP)
-
-### Error
-`mail_max_userip_connections`
-
-### Causa
-Demasiadas conexiones al servidor SMTP
+### Síntomas
+- Variables undefined
+- Errores de referencia
+- Problemas con workflow.data
 
 ### Solución ✅
-1. Usar carpetas y filtros específicos
-2. Ajustar configuraciones del servidor de correo
+1. **Scope de Variables**:
+   ```javascript
+   // Global
+   $workflow.data.miVariable = "valor";
+   
+   // Local al nodo
+   items[0].json.miVariable = "valor";
+   ```
 
-### Configuración 🔍
-- Configurar filtros para reducir datos innecesarios
-- Revisar loops en el workflow
-- Aumentar límites del servidor SMTP si es posible
+2. **Persistencia**:
+   ```javascript
+   // Guardar en workflow data
+   const data = $workflow.data;
+   data.contador = (data.contador || 0) + 1;
+   $workflow.data = data;
+   ```
 
-## 5. Switch y Code
+## 4. Errores de Base de Datos
 
-### Error
-El nodo Code solo lee la primera ruta del Switch
-
-### Solución ✅
-1. Usar nodo Loop antes del Switch
-2. Alternativamente, usar nodos IF en lugar de Switch
-
-### Configuración 🔍
-Desactivar "Always output data" en el Switch
-
-## 6. Debug con Subdominios
-
-### Error
-No se visualiza la ejecución paso a paso
-
-### Solución ✅
-1. Acceder usando IP pública y puerto
-2. Configurar correctamente el proxy reverso
-
-### Configuración ��
-```yaml
-# Ejemplo de configuración Traefik v3
-labels:
-  - "traefik.enable=true"
-  - "traefik.http.routers.n8n.rule=Host(`n8n.tudominio.com`)"
-  - "traefik.http.services.n8n.loadbalancer.server.port=5678"
-```
-
-## 7. Telegram e Imágenes
-
-### Error
-No se pueden enviar imágenes locales
+### Síntomas
+- Errores de conexión
+- Problemas de permisos
+- Queries fallidas
 
 ### Solución ✅
-1. Usar Write Binary File para guardar la imagen
-2. Referenciar la imagen en el mensaje de Telegram
+1. **Verificación de Conexión**:
+   ```sql
+   -- Test de conexión
+   SELECT 1;
+   ```
 
-### Configuración 🔍
-```javascript
-// Ejemplo de configuración
-{
-  "message": "Imagen adjunta",
-  "photo": "data/imagen.jpg"
-}
-```
+2. **Manejo de Errores**:
+   ```javascript
+   // En Function node
+   try {
+     const result = await $node.DB_Query.sql.execute();
+   } catch (error) {
+     console.log('Error DB:', error.message);
+     throw error;
+   }
+   ```
 
-## 8. Credenciales N8N
+## 5. Problemas de Rendimiento
 
-### Error
-`error:1C800064:Provider routines::bad decrypt`
+### Síntomas
+- Workflows lentos
+- Consumo alto de memoria
+- Timeouts
 
 ### Solución ✅
-1. Respaldar credenciales antes de actualizaciones
-2. Reconfigurar credenciales si es necesario
+1. **Optimización**:
+   ```javascript
+   // Procesar en lotes
+   const BATCH_SIZE = 100;
+   for (let i = 0; i < items.length; i += BATCH_SIZE) {
+     const batch = items.slice(i, i + BATCH_SIZE);
+     // Procesar batch
+   }
+   ```
 
-### Configuración 🔍
-```bash
-# Respaldar configuración
-cp ~/.n8n/config backup/
-```
+2. **Configuración**:
+   ```bash
+   # Ajustes de memoria en pm2
+   pm2 start n8n --max-memory-restart 4G
+   ```
 
-## Consejos Generales
+## 6. Configuración de Dominio
 
-1. **Siempre hacer respaldos** antes de actualizaciones mayores
-2. **Usar entornos de prueba** para validar workflows complejos
-3. **Mantener logs** de errores para diagnóstico
-4. **Verificar versiones** de N8N y nodos utilizados
-5. **Documentar configuraciones** especiales
+### Solución ✅
+1. **Configuración Nginx**:
+   ```nginx
+   server {
+     listen 443 ssl;
+     server_name n8n.tudominio.com;
+     
+     location / {
+       proxy_pass http://localhost:5678;
+       proxy_set_header Host $host;
+       proxy_set_header X-Real-IP $remote_addr;
+     }
+   }
+   ```
+
+2. **Docker Compose**:
+   ```yaml
+   version: '3'
+   services:
+     n8n:
+       image: n8nio/n8n
+       ports:
+         - "5678:5678"
+       environment:
+         - N8N_HOST=n8n.tudominio.com
+         - N8N_PROTOCOL=https
+         - N8N_SSL_CERT=/path/to/cert.pem
+   ```
+
+## 7. Manejo de Archivos y Multimedia
+
+### Solución ✅
+1. **Procesamiento de Imágenes**:
+   ```javascript
+   // Convertir imagen a Base64
+   const buffer = await $node.Read_File.binary.data;
+   const base64 = buffer.toString('base64');
+   ```
+
+2. **Envío a Telegram**:
+   ```javascript
+   // Configuración correcta
+   {
+     "message": "Nueva imagen",
+     "photo": {
+       "value": "{{ $binary.data }}",
+       "options": {
+         "filename": "imagen.jpg"
+       }
+     }
+   }
+   ```
+
+## 8. Gestión de Credenciales
+
+### Solución ✅
+1. **Backup de Credenciales**:
+   ```bash
+   # Exportar credenciales
+   n8n export:credentials --backup --output=credentials.json
+   
+   # Importar credenciales
+   n8n import:credentials --input=credentials.json
+   ```
+
+2. **Encriptación**:
+   ```bash
+   # Configurar clave de encriptación
+   export N8N_ENCRYPTION_KEY=tu-clave-segura
+   ```
+
+## Mejores Prácticas
+
+1. **Monitorización**:
+   - Implementar healthchecks
+   - Configurar alertas
+   - Mantener logs estructurados
+
+2. **Backup y Recuperación**:
+   ```bash
+   # Backup automático diario
+   0 0 * * * /usr/local/bin/n8n export:workflow --backup --output=/backups/workflows_$(date +\%Y\%m\%d).json
+   ```
+
+3. **Desarrollo Seguro**:
+   - Usar variables de entorno
+   - Implementar rate limiting
+   - Validar inputs
+
+4. **Testing**:
+   - Crear workflows de prueba
+   - Documentar casos de uso
+   - Mantener un entorno de staging
 
 ## Recursos Adicionales
 
 - [Documentación oficial de N8N](https://docs.n8n.io/)
 - [Foro de la comunidad](https://community.n8n.io/)
 - [Canal de Telegram de la Comunidad](https://t.me/aitorroma)
+- [GitHub de N8N](https://github.com/n8n-io/n8n)
 
 > Esta guía se actualiza regularmente con nuevos problemas y soluciones reportados por la comunidad. Si encuentras un problema no listado aquí, no dudes en compartirlo en nuestro canal de Telegram.
