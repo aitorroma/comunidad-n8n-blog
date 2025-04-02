@@ -1,3 +1,19 @@
+<div align="center">
+
+![[image-20210506104427925](https://t.me/comunidadn8n)](https://github.com/aitorroma/comunidad-n8n-blog/blob/main/assets/cmn8n.png?raw=true)
+
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J64AN17)
+
+  
+  <br>
+
+  <a href="https://t.me/comunidadn8n">
+    <img src="https://img.shields.io/badge/Telegram-informational?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram Badge"/>
+  </a>
+</div>
+</div>
+
 # Blog de la Comunidad N8N
 
 Este repositorio contiene todos los posts del [Blog de la Comunidad N8N](https://comunidad-n8n.com/blog). Es un espacio donde compartimos tutoriales, guías y experiencias sobre n8n, la plataforma de automatización de código abierto.
