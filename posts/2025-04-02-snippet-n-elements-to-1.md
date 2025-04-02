@@ -14,11 +14,16 @@ Esto puede ser muy util cuando necesitas que indiferentemente de la cantidad de 
 
 ## 1. Creación del Nodo
 - Añade el un nodo "code"
+
 ![nuevo nodo](../assets/2025-04-02_154640.jpg)
+
 ![seleccion code](../assets/2025-04-02_155110.jpg)
+
 - Indica el "modo" `Run Once for All Items`
 - Añade el codigo:
+
 ![Ingresar el codigo](../assets/2025-04-02_155239.jpg)
+
 ### Codigo
 - Este es el codigo que debes pegar:
 
