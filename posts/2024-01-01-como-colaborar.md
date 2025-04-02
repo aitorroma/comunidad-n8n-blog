@@ -1,6 +1,6 @@
 ---
 title: Cómo colaborar en el Blog de la Comunidad N8N
-date: 2024-01-01
+date: 2025-04-02
 author: aitorroma
 description: Guía para contribuir con tus artículos al blog de la comunidad N8N
 tags: [guía, colaboración, github]
