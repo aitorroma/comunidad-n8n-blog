@@ -7,7 +7,7 @@ tags: [snippet, nodo-code]
 featured_image: https://github.com/MrCaringi/assets/blob/main/images/others/comunidad-n8n/20250402_featured.png
 ---
 Este es un pequeño snippet que te va a ayudar a "consolidar" N cantidad de elementos en uno solo,
-Esto puede ser muy util cuando necesitas que indiferentemente de la cantidad de elementos que pueda tener como salida el nodo anterior, quieres que tenga un unico elemento de salida
+Esto puede ser muy util cuando necesitas que indiferentemente de la cantidad de elementos que pueda tener como salida el nodo anterior, quieres que convierta a un único elemento de salida.
 
 ## Índice
 1. [Creación del Nodo](#1-creacion-del-nodo)
