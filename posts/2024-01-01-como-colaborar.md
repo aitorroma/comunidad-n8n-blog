@@ -104,7 +104,7 @@ El blog está alojado en GitHub y utiliza archivos markdown para los posts. Esto
 
 Si tienes dudas o necesitas ayuda:
 1. Abre un issue en el repositorio
-2. Únete a nuestro [canal de Telegram](https://t.me/aitorroma)
+2. Únete a nuestra [Comunidad de Telegram](https://t.me/comunidadn8n)
 3. Comenta en el PR
 
 ¡Esperamos tu contribución!
