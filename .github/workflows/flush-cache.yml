@@ -1,0 +1,17 @@
+name: Flush Blog Cache
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'posts/**'
+
+jobs:
+  flush-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Flush blog cache
+        run: |
+          curl -X GET https://comunidad-n8n.com/blog/flush
+          echo "Cache flushed successfully"
