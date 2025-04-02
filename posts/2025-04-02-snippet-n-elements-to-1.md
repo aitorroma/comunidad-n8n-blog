@@ -13,14 +13,14 @@ Esto puede ser muy util cuando necesitas que indiferentemente de la cantidad de 
 1. [Creación del Nodo](#1-creacion-del-nodo)
 
 ## 1. Creación del Nodo
-- Añade el un nodo "code"
+- Añade el nodo "code"
 
 ![nuevo nodo](../assets/2025-04-02_154640.jpg)
 
 ![seleccion code](../assets/2025-04-02_155110.jpg)
 
 - Indica el "modo" `Run Once for All Items`
-- Añade el codigo:
+- Añade el código:
 
 ![Ingresar el codigo](../assets/2025-04-02_155239.jpg)
 
@@ -37,5 +37,5 @@ return [
 ]
 ```
 
-- Y con esto ya culminamos
+- Y con esto ya lo puedes usar!
 
