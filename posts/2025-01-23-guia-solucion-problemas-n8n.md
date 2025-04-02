@@ -4,7 +4,7 @@ date: 2025-01-23
 author: aitorroma
 description: Una guía completa de los errores más frecuentes en N8N y cómo solucionarlos, basada en la experiencia de la comunidad
 tags: [guía, soluciones, errores, troubleshooting]
-featured_image: https://plus.unsplash.com/premium_photo-1683120972789-f2a14477e6b3\?w\=800\&auto\=format\&fit\=crop
+featured_image: https://raw.githubusercontent.com/aitorroma/comunidad-n8n-blog/main/assets/solving.jpg
 ---
 
 # Guía de Solución de Problemas Comunes en N8N
