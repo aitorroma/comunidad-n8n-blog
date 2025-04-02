@@ -4,7 +4,7 @@ date: 2024-01-01
 author: aitorroma
 description: Guía para contribuir con tus artículos al blog de la comunidad N8N
 tags: [guía, colaboración, github]
-featured_image: https://raw.githubusercontent.com/aitorroma/comunidad-n8n-blog/main/assets/colaborar.png
+featured_image: https://raw.githubusercontent.com/aitorroma/comunidad-n8n-blog/main/assets/colaborar.jpg
 ---
 
 ¡Bienvenido al Blog de la Comunidad N8N! Este espacio está diseñado para que todos podamos compartir nuestros conocimientos, experiencias y tutoriales sobre N8N. Aquí te explico cómo puedes contribuir con tus artículos.
