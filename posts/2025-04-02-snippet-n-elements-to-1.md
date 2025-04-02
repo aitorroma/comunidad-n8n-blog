@@ -21,7 +21,8 @@ Esto puede ser muy util cuando necesitas que indiferentemente de la cantidad de 
 ![Ingresar el codigo](../assets/2025-04-02_155239.png)
 ### Codigo
 - Este es el codigoq eu debes pegar
-´´´js
+
+```javascript
 return [
   {
     items: items.map(function(item) {
@@ -29,6 +30,7 @@ return [
     })
   }
 ]
-´´´
+```
+
 - Y con esto ya culminamos
 
