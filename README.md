@@ -1,6 +1,6 @@
 <div align="center">
 
-![[image-20210506104427925](https://t.me/comunidadn8n)](https://github.com/aitorroma/comunidad-n8n-blog/blob/main/assets/cmn8n.png?raw=true)
+![[image-20210506104427925](https://t.me/comunidadn8n)](https://imgs.nocodeopensource.io/insecure/rs:fill:200:200/g:sm/plain/https://raw.githubusercontent.com/aitorroma/comunidad-n8n-blog/refs/heads/main/assets/cmn8n.png@webp)
 
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J64AN17)
