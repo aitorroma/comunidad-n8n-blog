@@ -20,7 +20,7 @@ Esto puede ser muy util cuando necesitas que indiferentemente de la cantidad de 
 - Añade el codigo:
 ![Ingresar el codigo](../assets/2025-04-02_155239.png)
 ### Codigo
-- Este es el codigoq eu debes pegar
+- Este es el codigo que debes pegar:
 
 ```javascript
 return [
