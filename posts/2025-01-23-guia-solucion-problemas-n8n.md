@@ -7,8 +7,6 @@ tags: [guía, soluciones, errores, troubleshooting, n8n]
 featured_image: https://raw.githubusercontent.com/aitorroma/comunidad-n8n-blog/main/assets/solving.jpg
 ---
 
-# Guía de Solución de Problemas Comunes en N8N
-
 Esta guía recopila los problemas más frecuentes reportados por la comunidad de N8N y sus soluciones verificadas. Cada problema incluye una descripción detallada, su impacto, los pasos específicos para resolverlo y ejemplos prácticos de configuración.
 
 ## Índice
