@@ -125,7 +125,3 @@ Una vez completados estos pasos, el script:
 
 - 📂 [Repositorio en GitHub de n8n-webhook-cf](https://github.com/aitorroma/n8n-webhook-cf/)
 - 📖 [Documentación de Cloudflare Workers](https://developers.cloudflare.com/workers/)
-
----
-
-¿Has implementado esta solución? ¿Tienes alguna pregunta o sugerencia? Comparte tu experiencia en los comentarios o únete a nuestra comunidad en Discord para discutir más sobre cómo proteger tus automatizaciones con n8n.
