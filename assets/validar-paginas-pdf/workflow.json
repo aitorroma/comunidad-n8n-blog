@@ -1,0 +1,100 @@
+{
+  "name": "Comprobar páginas PDF",
+  "id": "PdfPagesCheckDemo",
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "nodes": [
+    {
+      "name": "Inicio manual",
+      "id": "pdf-demo-1",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "name": "Leer PDF",
+      "id": "pdf-demo-2",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "/fixture/{correcto,incompleto,invertido,otra-pagina}.pdf",
+        "options": {}
+      }
+    },
+    {
+      "name": "Extraer texto",
+      "id": "pdf-demo-3",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "data",
+        "options": {}
+      }
+    },
+    {
+      "name": "Validar páginas",
+      "id": "pdf-demo-4",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const expected = ['QA-002', 'QA-004'];\nconst pages = Number($json.numpages);\nconst text = typeof $json.text === 'string' ? $json.text : '';\nconst found = text.split(/\\r?\\n/).map(line => line.trim())\n  .filter(line => /^QA-\\d{3}$/.test(line));\nconst countOk = pages === expected.length;\nconst orderOk = found.length === expected.length\n  && found.every((marker, index) => marker === expected[index]);\n\nreturn { json: {\n  file: $('Leer PDF').item.binary.data.fileName,\n  status: countOk && orderOk ? 'revisado' : 'revisar',\n  pages, expected, found\n} };"
+      }
+    }
+  ],
+  "connections": {
+    "Inicio manual": {
+      "main": [
+        [
+          {
+            "node": "Leer PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer PDF": {
+      "main": [
+        [
+          {
+            "node": "Extraer texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer texto": {
+      "main": [
+        [
+          {
+            "node": "Validar páginas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
